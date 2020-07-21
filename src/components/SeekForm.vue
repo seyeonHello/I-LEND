@@ -2,44 +2,37 @@
 <v-app>
 <v-container>
         <v-form v-model="valid">
-        <v-card>
-        <v-card-title>{{this.$store.getters.getID}}님</v-card-title>
+        <v-card >
         <v-card-text>
             <v-row>
                 <v-col cols="12" md="4">
-                    <v-text-field label="물품명" v-model="name"></v-text-field>
-                </v-col>
-                <v-col cols="12" md="4">
-                    <v-text-field label="대여가격" v-model="price"></v-text-field>
-                </v-col>
-                <v-col cols="12" md="4">
-                  <v-text-field label="물품사진" v-model="image"></v-text-field>
+                    <v-text-field label="물품명" v-model="seekName"></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
-                    <v-text-field label="설명" v-model="description"></v-text-field>
+                    <v-text-field label="설명" v-model="seekDes"></v-text-field>
                 </v-col>
                 <v-col cols="12" md="3">
                   <v-menu
                     :close-on-content-click="false"
                     ref="menu"
                     v-model="modal"
-                    :return-value.sync="startDate"
+                    :return-value.sync="seekStartDate"
                     transition="scale-transition"
                     offset-y
                     min-width="290px"
                    >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                      v-model="startDate"
+                      v-model="seekStartDate"
                       label="시작 날짜"
                       readonly
                       outlined
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="startDate" no-title scrollable>
+                  <v-date-picker v-model="seekStartDate" no-title scrollable>
                   <v-btn text color="indigo" @click="modal = false">취소</v-btn>
-                  <v-btn text color="indigo" @click="$refs.menu.save(startDate)">확인</v-btn>
+                  <v-btn text color="indigo" @click="$refs.menu.save(seekStartDate)">확인</v-btn>
                   </v-date-picker>
                   </v-menu>
                 </v-col>
@@ -48,23 +41,23 @@
                     :close-on-content-click="false"
                     ref="menu2"
                     v-model="modal2"
-                    :return-value.sync="endDate"
+                    :return-value.sync="seekEndDate"
                     transition="scale-transition"
                     offset-y
                     min-width="290px"
                    >
                   <template v-slot:activator="{ on }">
                     <v-text-field
-                      v-model="endDate"
+                      v-model="seekEndDate"
                       label="마지막 날짜"
                       readonly
                       outlined
                       v-on="on"
                     ></v-text-field>
                   </template>
-                  <v-date-picker v-model="endDate" no-title scrollable>
+                  <v-date-picker v-model="seekEndDate" no-title scrollable>
                   <v-btn text color="indigo" @click="modal2 = false">취소</v-btn>
-                  <v-btn text color="indigo" @click="$refs.menu2.save(endDate)">확인</v-btn>
+                  <v-btn text color="indigo" @click="$refs.menu2.save(seekEndDate)">확인</v-btn>
                   </v-date-picker>
                   </v-menu>
                 </v-col>
@@ -74,7 +67,7 @@
                 <v-btn
                     color="primary"
                     text
-                    @click="addNewItem"
+                    @click="addNewSeek"
                 >
                     SUBMIT
                 </v-btn>
@@ -93,19 +86,16 @@
 </v-app>
 </template>
 <script>
-import {mapState, mapActions, mapGetters} from "vuex"
 import axios from 'axios'
+import {mapState, mapActions} from "vuex"
 export default {
-  name: 'NewPost',
+  name: 'SeekForm',
   data () {
     return {
-      name:'',
-      price:'',
-      startDate:'',
-      endDate:'',
-      date:null,
-      description:'',
-      image:'',
+      seekName:'',
+      seekStartDate:'',
+      seekEndDate:'',
+      seekDes:'',
       menu: '',
       menu2: '',
       modal: '',
@@ -113,24 +103,17 @@ export default {
       valid: false,
     }
   },
-  computed: mapGetters([
-  'getID'
-  ]),
   methods: {
     goBack(){
     },
-    addNewItem () {
-      console.log('hello');
-      console.log(this.$store.getters.getID);
-      axios.post('/api/task',
-        { title: this.name, price: this.price, startDate:this.startDate, endDate:this.endDate, description:this.description, image:this.image, memberID: this.$store.getters.getID})
+    addNewSeek () {
+      axios.post('/api/seeks',
+        { seekName: this.seekName, seekDes:this.seekDes, seekStartDate:this.seekStartDate, seekEndDate:this.seekEndDate})
         .then((res) => {
-          this.name = ''
-          this.price=''
-          this.startDate=''
-          this.endDate=''
-          this.description=''
-          this.image=''
+          this.seekName = ''
+          this.seekDes=''
+          this.seekStartDate=''
+          this.seekEndDate=''
           alert('상품이 게시되었습니다.');
           console.log(res)
         })

@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import List from '@/Views/List'
-import placeCard from '@/components/placeCard'
-import Map from '@/Views/Map'
 import Lend from '@/Views/Lend'
 import NewItem from '@/Views/NewItem'
 import itemForm from '@/components/itemForm'
 import Login from '@/Views/Login'
+import Seek from '@/Views/Seek'
+import SeekForm from '@/components/SeekForm'
+import SeekList from '@/Views/SeekList'
 import {mapState, mapActions} from "vuex"
 Vue.use(Router)
 const requireAuth = () => (from, to, next) => {
@@ -31,17 +31,19 @@ export default new Router({
       //beforeEnter: requireAuth()
     },
     {
-      path: '/admin',
-      name: 'admin',
-      // route level code-splitting
-      // this generates a separate chunk (chunkName.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import(/* webpackChunkName: "Admin" */ '../components/admin.vue')
-    },
-    {
       path:'/NewItem',
       name: 'NewItem',
       component: NewItem
+    },
+    {
+      path:'/Seek',
+      name: 'Seek',
+      component: Seek
+    },
+    {
+      path:'/SeekList',
+      name: 'SeekList',
+      component: SeekList
     }
   ]
 })

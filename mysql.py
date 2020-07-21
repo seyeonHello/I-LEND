@@ -22,6 +22,14 @@ def get_all_tasks():
     #print(rv)
     return jsonify(rv)
 
+@app.route('/api/seeks', methods=['GET'])
+def get_all_seeks():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM db_tasks.seek")
+    rv = cur.fetchall()
+    #print(rv)
+    return jsonify(rv)
+
 @app.route('/api/signup', methods=['GET'])
 def get_all_users():
     cur = mysql.connection.cursor()
@@ -46,6 +54,25 @@ def add_task():
     mysql.connection.commit()
 
     result = {'title': title}
+
+    return jsonify({'result': result})
+
+@app.route('/api/seeks', methods=['POST'])
+def add_seek():
+    print('why')
+    cur = mysql.connection.cursor()
+    print('why')
+    seekName = request.get_json()['seekName']
+    seekDes = request.get_json()['seekDes']
+    seekStartDate = request.get_json()['seekStartDate']
+    seekEndDate = request.get_json()['seekEndDate']
+    print(seekDes)
+    cur.execute(
+      "INSERT INTO db_tasks.seek (seekName, seekDes, seekStartDate, seekEndDate) VALUES('" + str(seekName) + "', '" + str(seekDes) + "', '" + str(seekStartDate) + "', '" + str(seekEndDate) + "');")
+    data = cur.fetchall()
+    mysql.connection.commit()
+
+    result = {'seekName': seekName}
 
     return jsonify({'result': result})
 

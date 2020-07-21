@@ -1,8 +1,8 @@
 <template>
 <div class="col-md-12 mx-auto">
   <v-row dense>
-            <v-col cols="3" v-for="(m, index) of todos" :key="index">
-              <item :data="m" />
+            <v-col cols="3" v-for="(m, index) of seeks" :key="index">
+              <seekItem :data="m" />
             </v-col>
           </v-row>
 </div>
@@ -10,26 +10,26 @@
 
 <script>
 import axios from 'axios'
-import item from '@/components/item.vue'
+import seekItem from '@/components/seekItem.vue'
 export default {
-  name: 'Lend',
+  name: 'SeekList',
   components: {
-    item
+    seekItem
   },
   data () {
     return {
-      todos: []
+      seeks: []
     }
   },
   mounted () {
-    this.getTasks()
+    this.getSeeks()
   },
   methods: {
-    getTasks () {
-      axios({ method: 'GET', url: '/api/tasks' }).then(
+    getSeeks () {
+      axios({ method: 'GET', url: '/api/seeks' }).then(
         result => {
           console.log(result.data)
-          this.todos = result.data
+          this.seeks = result.data
         },
         error => {
           console.error(error)

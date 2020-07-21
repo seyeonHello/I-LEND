@@ -133,7 +133,7 @@ export default {
     console.log('bye');
     if(this.$store.state.isLogin===true){
     alert("hello");
-      window.location.href = '/Lend';
+      window.location.href = '/NewItem';
     }
     }
 }

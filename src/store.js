@@ -1,6 +1,6 @@
 import Vue from "vue"
 import Vuex from "vuex"
-import axios from 'axios'
+import router from "@/router/index"
 Vue.use(Vuex);
 
 export default new Vuex.Store({
@@ -12,12 +12,24 @@ export default new Vuex.Store({
     userList:[],
     isLogin: false,
     isLoginError: false,
-    currentMember:null
+    currentMember:null,
+    nickName:''
   },
-  mutation:{
+   getters: {
+    getID: function (state) {
+      console.log(state.nickName);
+      return state.nickName;
+    }
+  },
+  mutations:{
     //로그인 성공
     loginSuccess(state){
       state.isLogin=true;
+    },
+    changeName(state, account){
+      state.nickName=account;
+      state.isLogin=true;
+      console.log(state.nickName)
     }
   },
   actions:{
@@ -26,9 +38,6 @@ export default new Vuex.Store({
       state.userList=signObj.userList;
       state.userList.forEach(user=>{
         if(user.id===signObj.id) state.currentMember=user;
-        else{
-          alert("이메일이 존재하지 않습니다.")
-        }
       });
       state.currentMember===null
       ? (state.isLoginError=true)
@@ -37,8 +46,10 @@ export default new Vuex.Store({
         : state.isLogin=true;
 
       if(state.isLogin===true) {
+        commit('changeName',state.currentMember.id);
         alert(state.currentMember.id+'님 환영합니다.');
-        window.location.href = '/Lend';
+        //window.location.href = '/NewItem';
+        router.push({name:"Lend"})
       }
     }
   }
