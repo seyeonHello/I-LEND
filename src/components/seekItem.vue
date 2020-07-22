@@ -2,10 +2,12 @@
   <v-card
     class="mx-auto"
     max-width="400"
+    color="grey lighten-5"
   >
     <v-card-title>{{ data.seekName }}</v-card-title>
 
     <v-card-text class="text--primary">
+      <div>게시일:{{data.today}}</div>
       <div>{{ data.seekStartDate }}~{{ data.seekEndDate }}</div>
 
       <div>{{ data.seekDes }}</div>
@@ -36,7 +38,8 @@ export default {
           seekName: String,
           seekDes: String,
           seekStartDate: String,
-          seekEndDate: String
+          seekEndDate: String,
+          today: String
         }
     },
   methods: {

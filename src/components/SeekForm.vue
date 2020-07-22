@@ -11,7 +11,25 @@
                 <v-col cols="12" md="6">
                     <v-text-field label="설명" v-model="seekDes"></v-text-field>
                 </v-col>
-                <v-col cols="12" md="3">
+                <v-col cols="12" md="2">
+                <v-autocomplete :items="period" outlined label="기간 선택" v-model="selectedPeriod" class="text"></v-autocomplete>
+                </v-col>
+            </v-row>
+                <div v-if="selectedPeriod === '오늘'">
+                  <v-row justify="space-around" align="center">
+                  <v-col style="width: 290px; flex: 0 1 auto;">
+                  <h2>Start:</h2>
+                  <v-time-picker v-model="seekStartDate" :max="end"></v-time-picker>
+                  </v-col>
+                  <v-col style="width: 290px; flex: 0 1 auto;">
+                  <h2>End:</h2>
+                  <v-time-picker v-model="seekEndDate" :min="start"></v-time-picker>
+                  </v-col>
+                  </v-row>
+                </div>
+                <div v-if="selectedPeriod === '여러날'">
+                <v-row justify="center" align="center">
+                <v-col style="width: 290px; flex: 0 1 auto;">
                   <v-menu
                     :close-on-content-click="false"
                     ref="menu"
@@ -36,7 +54,7 @@
                   </v-date-picker>
                   </v-menu>
                 </v-col>
-                <v-col cols="12" md="3">
+                <v-col style="width: 290px; flex: 0 1 auto;">
                   <v-menu
                     :close-on-content-click="false"
                     ref="menu2"
@@ -61,7 +79,8 @@
                   </v-date-picker>
                   </v-menu>
                 </v-col>
-            </v-row>
+                </v-row>
+                </div>
             <v-divider></v-divider>
             <v-row>
                 <v-btn
@@ -101,14 +120,26 @@ export default {
       modal: '',
       modal2: '',
       valid: false,
+      start:'',
+      end:'',
+      period:['오늘','여러날'],
+      selectedPeriod:'',
     }
   },
   methods: {
     goBack(){
     },
+     getDateFormat (date) {
+      function formating (num) {
+        num = num + '';
+        return num.length < 2 ? '0' + num : num;
+      }
+      return date.getFullYear() + '-' + formating(date.getMonth() + 1) + '-' + formating(date.getDate());
+    },
     addNewSeek () {
+      let today = this.getDateFormat(new Date());
       axios.post('/api/seeks',
-        { seekName: this.seekName, seekDes:this.seekDes, seekStartDate:this.seekStartDate, seekEndDate:this.seekEndDate})
+        { seekName: this.seekName, seekDes:this.seekDes, seekStartDate:this.seekStartDate, seekEndDate:this.seekEndDate, today:today})
         .then((res) => {
           this.seekName = ''
           this.seekDes=''

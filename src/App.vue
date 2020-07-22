@@ -14,7 +14,6 @@
           <v-spacer></v-spacer>
           <v-toolbar-items class="hidden-sm-and-down">
             <v-btn color="teal lighten-3" to="/Lend">SHOW</v-btn>
-            <v-btn color="teal lighten-3" to="/SeekList">SeekList</v-btn>
             <v-btn color="teal lighten-3" to="/NewItem">POST</v-btn>
             <v-btn color="teal lighten-3" to="/Seek">SEEK</v-btn>
           </v-toolbar-items>
@@ -32,3 +31,6 @@ export default {
   name: 'App'
 }
 </script>
+<style>
+
+</style>

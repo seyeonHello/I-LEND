@@ -6,7 +6,6 @@ import itemForm from '@/components/itemForm'
 import Login from '@/Views/Login'
 import Seek from '@/Views/Seek'
 import SeekForm from '@/components/SeekForm'
-import SeekList from '@/Views/SeekList'
 import {mapState, mapActions} from "vuex"
 Vue.use(Router)
 const requireAuth = () => (from, to, next) => {
@@ -39,11 +38,6 @@ export default new Router({
       path:'/Seek',
       name: 'Seek',
       component: Seek
-    },
-    {
-      path:'/SeekList',
-      name: 'SeekList',
-      component: SeekList
     }
   ]
 })

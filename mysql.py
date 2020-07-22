@@ -66,9 +66,10 @@ def add_seek():
     seekDes = request.get_json()['seekDes']
     seekStartDate = request.get_json()['seekStartDate']
     seekEndDate = request.get_json()['seekEndDate']
+    today=request.get_json()['today']
     print(seekDes)
     cur.execute(
-      "INSERT INTO db_tasks.seek (seekName, seekDes, seekStartDate, seekEndDate) VALUES('" + str(seekName) + "', '" + str(seekDes) + "', '" + str(seekStartDate) + "', '" + str(seekEndDate) + "');")
+      "INSERT INTO db_tasks.seek (seekName, seekDes, seekStartDate, seekEndDate, today) VALUES('" + str(seekName) + "', '" + str(seekDes) + "', '" + str(seekStartDate) + "', '" + str(seekEndDate) + "', '" + str(today) + "');")
     data = cur.fetchall()
     mysql.connection.commit()
 

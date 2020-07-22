@@ -2,6 +2,8 @@
   <v-card
     class="mx-auto"
     max-width="400"
+    color="grey lighten-5"
+    id="content"
   >
     <v-img
       :aspect-ratio="4/3"
@@ -55,3 +57,8 @@ export default {
   }
 }
 </script>
+<style>
+ #content {
+    margin-bottom: 3px;
+  }
+</style>
