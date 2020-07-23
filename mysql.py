@@ -38,6 +38,17 @@ def get_all_users():
     #print(rv)
     return jsonify(rv)
 
+@app.route('/api/users', methods=['GET'])
+def get_msg():
+    cur = mysql.connection.cursor()
+    args = request.args.get('hostName')
+    print('hello')
+    print(args)
+    hostname=str(args)
+    cur.execute("SELECT * FROM db_tasks."+hostname)
+    rv = cur.fetchall()
+    return jsonify(rv)
+
 @app.route('/api/task', methods=['POST'])
 def add_task():
     cur = mysql.connection.cursor()

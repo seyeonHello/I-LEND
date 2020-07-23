@@ -50,6 +50,7 @@ export default new Vuex.Store({
         alert(state.currentMember.id+'님 환영합니다.');
         //window.location.href = '/NewItem';
         router.push({name:"Lend"})
+        router.push({name:"MyPage"})
       }
     }
   }

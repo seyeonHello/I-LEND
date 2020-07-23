@@ -8,7 +8,6 @@ import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
 
-
 Vue.use(Vuetify);
 require('../node_modules/bootstrap/dist/css/bootstrap.css')
 
@@ -17,10 +16,12 @@ Vue.config.productionTip = false
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
+  icons: {
+    iconfont: 'mdiSvg', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
+  },
   router,
   store,
   components: { App },
   vuetify: new Vuetify(),
-  template: '<App/>',
-  icons: { iconfont: 'md'},
+  template: '<App/>'
 })
