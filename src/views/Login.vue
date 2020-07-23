@@ -32,28 +32,48 @@
     </v-layout>
     <v-dialog
       v-model="dialog"
-      max-width="350"
+      max-width="400"
     >
       <v-card>
         <v-card-title class="headline">회원가입</v-card-title>
 
         <v-card-text>
+        <v-row>
+        <v-col cols="12" md="9">
         <v-text-field
               v-model="email"
-              label="email">
+              label="학교 이메일">
               </v-text-field>
+              </v-col>
+              <v-col cols="12" md="3">
+              <v-btn
+                color="grey lighten-3"
+              >인증
+          </v-btn>
+          </v-col>
+          </v-row>
+          <v-row>
+        <v-col cols="12" md="9">
               <v-text-field
                 v-model="phoneNum"
-                label="phoneNum">
+                label="전화번호">
                 </v-text-field>
+                </v-col>
+                <v-col cols="12" md="3">
+              <v-btn
+                color="grey lighten-3"
+              >인증
+          </v-btn>
+          </v-col>
+          </v-row>
           <v-text-field
               v-model="signUpID"
-              label="id">
+              label="아이디">
               </v-text-field>
               <v-text-field
                 v-model="signUpPWD"
                 type="password"
-                label="password">
+                label="비밀번호">
                 </v-text-field>
         </v-card-text>
 

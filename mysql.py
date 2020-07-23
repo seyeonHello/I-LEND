@@ -77,6 +77,28 @@ def add_seek():
 
     return jsonify({'result': result})
 
+@app.route('/api/users', methods=['POST'])
+def add_msg():
+    cur = mysql.connection.cursor()
+    receiver = request.get_json()['receiver']
+    sender = request.get_json()['sender']
+    message = request.get_json()['message']
+    print(receiver+" "+sender+" "+message)
+
+    firstWord = "INSERT INTO "
+    secondWord=" (sender, message) VALUES("
+    strSender= '"'+str(sender)+'"'+", "
+    strMessage = '"'+str(message)+'"' + ");"
+    strReceiver = str(receiver)
+    print(firstWord+strReceiver+secondWord+strSender+strMessage)
+    cur.execute(firstWord+strReceiver+secondWord+strSender+strMessage)
+    data = cur.fetchall()
+    mysql.connection.commit()
+
+    result = {'receiver': receiver}
+
+    return jsonify({'result': result})
+
 @app.route('/api/signup', methods=['POST'])
 def add_users():
     cur = mysql.connection.cursor()
@@ -84,13 +106,18 @@ def add_users():
     pwd = request.get_json()['signUpPWD']
     phoneNum = request.get_json()['phoneNum']
     email = request.get_json()['email']
-    print(id)
-    print(pwd)
+
     cur.execute(
       "INSERT INTO db_tasks.users (id, pwd, phoneNum, email) VALUES('" + str(id) + "', '" + str(pwd) + "', '" + str(phoneNum) + "', '" + str(email) + "');")
     data = cur.fetchall()
     mysql.connection.commit()
-
+    cur = mysql.connection.cursor()
+    firstWord="CREATE TABLE "
+    secondWord="(sender VARCHAR(40), message TEXT);"
+    strID=str(id)
+    cur.execute(firstWord +strID+secondWord)
+    data = cur.fetchall()
+    mysql.connection.commit()
     result = {'id': id}
 
     return jsonify({'result': result})
