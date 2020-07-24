@@ -106,7 +106,7 @@
 </template>
 <script>
 import axios from 'axios'
-import {mapState, mapActions} from "vuex"
+import {mapState, mapActions, mapGetters} from "vuex"
 export default {
   name: 'SeekForm',
   data () {
@@ -126,6 +126,9 @@ export default {
       selectedPeriod:'',
     }
   },
+  computed: mapGetters([
+  'getID'
+  ]),
   methods: {
     goBack(){
     },
@@ -139,7 +142,7 @@ export default {
     addNewSeek () {
       let today = this.getDateFormat(new Date());
       axios.post('/api/seeks',
-        { seekName: this.seekName, seekDes:this.seekDes, seekStartDate:this.seekStartDate, seekEndDate:this.seekEndDate, today:today})
+        { seekName: this.seekName, seekDes:this.seekDes, seekStartDate:this.seekStartDate, seekEndDate:this.seekEndDate, today:today, memberID: this.$store.getters.getID})
         .then((res) => {
           this.seekName = ''
           this.seekDes=''

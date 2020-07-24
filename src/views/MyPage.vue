@@ -15,7 +15,7 @@
       color="teal lighten-2"
       dark
     >
-      <v-toolbar-title>Member List</v-toolbar-title>
+      <v-toolbar-title>{{this.$store.getters.getID}}님의 Member</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
 
@@ -38,7 +38,7 @@
       color="teal lighten-2"
       dark
     >
-      <v-toolbar-title>Message List</v-toolbar-title>
+      <v-toolbar-title>Message</v-toolbar-title>
       <v-spacer></v-spacer>
     </v-toolbar>
 
@@ -52,9 +52,9 @@
 
         <v-list-item-content>
           <v-list-item-title v-text="item.sender"></v-list-item-title>
-          {{item.message}}
+          [{{item.title}}] {{item.message}}
         </v-list-item-content>
-        <v-dialog
+    <v-dialog
       v-model="dialog"
       max-width="400"
     >
@@ -62,8 +62,14 @@
         <v-card-title class="headline">Message</v-card-title>
 
         <v-card-text>
+        <v-text-field
+              v-model="title"
+              label="책이름"
+              >
+              </v-text-field>
          <v-text-field
               v-model="toMessage"
+              label="메시지를 입력하세요."
               >
               </v-text-field>
         </v-card-text>
@@ -78,7 +84,7 @@
           <v-btn
             color="green darken-1"
             text
-            @click="onClickMemoUpdateBtn"
+            @click="onClickMemoUpdateBtn(item.sender)"
           >
             Agree
           </v-btn>
@@ -102,7 +108,8 @@ export default {
       memberList:[],
       memberNameList:[],
       toMessage:'',
-      imgURL:'/static/human.png'
+      imgURL:'/static/human.png',
+      title:''
       }
     },
     computed: mapGetters([
@@ -112,9 +119,9 @@ export default {
       this.getMessage()
     },
     methods: {
-    onClickMemoUpdateBtn(memo){
+    onClickMemoUpdateBtn(sender){
       axios.post('/api/users',
-        { receiver :this.data.memberID, sender: this.$store.getters.getID, message: memo})
+        { receiver :sender, sender: this.$store.getters.getID, message: this.toMessage, title:this.title})
         .then((res) => {
           alert('메시지가 전송 되었습니다.');
           this.dialog=false;
@@ -126,7 +133,6 @@ export default {
     },
     getMessage () {
     const ctx=this;
-    console.log("hellobye")
     console.log(this.$store.getters.getID);
       axios.get('/api/users', {
         params: {

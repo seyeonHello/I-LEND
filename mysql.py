@@ -70,17 +70,16 @@ def add_task():
 
 @app.route('/api/seeks', methods=['POST'])
 def add_seek():
-    print('why')
     cur = mysql.connection.cursor()
-    print('why')
     seekName = request.get_json()['seekName']
     seekDes = request.get_json()['seekDes']
     seekStartDate = request.get_json()['seekStartDate']
     seekEndDate = request.get_json()['seekEndDate']
     today=request.get_json()['today']
+    memberID=request.get_json()['memberID']
     print(seekDes)
     cur.execute(
-      "INSERT INTO db_tasks.seek (seekName, seekDes, seekStartDate, seekEndDate, today) VALUES('" + str(seekName) + "', '" + str(seekDes) + "', '" + str(seekStartDate) + "', '" + str(seekEndDate) + "', '" + str(today) + "');")
+      "INSERT INTO db_tasks.seek (seekName, seekDes, seekStartDate, seekEndDate, today, memberID) VALUES('" + str(seekName) + "', '" + str(seekDes) + "', '" + str(seekStartDate) + "', '" + str(seekEndDate) + "', '" + str(today) + "', '" + str(memberID) + "');")
     data = cur.fetchall()
     mysql.connection.commit()
 
@@ -94,15 +93,17 @@ def add_msg():
     receiver = request.get_json()['receiver']
     sender = request.get_json()['sender']
     message = request.get_json()['message']
-    print(receiver+" "+sender+" "+message)
+    title = request.get_json()['title']
+    #title(receiver+" "+sender+" "+message)
 
     firstWord = "INSERT INTO "
-    secondWord=" (sender, message) VALUES("
+    secondWord=" (sender, message,title) VALUES("
     strSender= '"'+str(sender)+'"'+", "
-    strMessage = '"'+str(message)+'"' + ");"
+    strMessage = '"' + str(message) + '"' + ", "
+    strTitle = '"'+str(title)+'"' + ");"
     strReceiver = str(receiver)
     print(firstWord+strReceiver+secondWord+strSender+strMessage)
-    cur.execute(firstWord+strReceiver+secondWord+strSender+strMessage)
+    cur.execute(firstWord+strReceiver+secondWord+strSender+strMessage+strTitle)
     data = cur.fetchall()
     mysql.connection.commit()
 
@@ -124,7 +125,7 @@ def add_users():
     mysql.connection.commit()
     cur = mysql.connection.cursor()
     firstWord="CREATE TABLE "
-    secondWord="(sender VARCHAR(40), message TEXT);"
+    secondWord="(sender VARCHAR(40), message TEXT, title VARCHAR(50));"
     strID=str(id)
     cur.execute(firstWord +strID+secondWord)
     data = cur.fetchall()

@@ -49,9 +49,10 @@
             background-color="teal lighten-4"
             color="black"
             v-model="memoDetail"
-            rows="10"
+            label="추가 메시지를 입력하세요"
+            rows="5"
           ></v-textarea>
-          <v-btn color="teal darken-1" text v-on:click="onClickMemoUpdateBtn(memoDetail)">save</v-btn>
+          <v-btn color="teal darken-1" text v-on:click="onClickMemoUpdateBtn(data.title)">save</v-btn>
     </v-card>
     </v-dialog>
     </v-container>
@@ -83,11 +84,11 @@ export default {
   'getID'
   ]),
   methods: {
-    onClickMemoUpdateBtn(memo){
+    onClickMemoUpdateBtn(title){
     console.log(this.data.memberID);
     console.log('ple');
       axios.post('/api/users',
-        { receiver :this.data.memberID, sender: this.$store.getters.getID, message: memo})
+        { receiver :this.data.memberID, sender: this.$store.getters.getID, message: this.memoDetail, title:title})
         .then((res) => {
           alert('메시지가 전송 되었습니다.');
           this.dialog=false;
