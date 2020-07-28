@@ -2,17 +2,26 @@
 <v-app>
 <v-container>
         <v-form v-model="valid">
-        <v-card>
-        <v-card-title>{{this.$store.getters.getID}}님</v-card-title>
+        <v-card class="grey lighten-5">
         <v-card-text>
             <v-row>
-                <v-col cols="12" md="4">
-                    <v-text-field label="물품명" v-model="name"></v-text-field>
+                <v-col cols="12" md="3">
+                  <v-select
+                  v-model="selectedState"
+                  :items="states"
+                  menu-props="auto"
+                  hide-details
+                  label="전공/영역을 선택해주세요"
+                  single-line
+                ></v-select>
                 </v-col>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="3">
+                    <v-text-field label="책이름" v-model="name"></v-text-field>
+                </v-col>
+                <v-col cols="12" md="3">
                     <v-text-field label="대여가격" v-model="price"></v-text-field>
                 </v-col>
-                <v-col cols="12" md="4">
+                <v-col cols="12" md="3">
                   <v-text-field label="물품사진" v-model="image"></v-text-field>
                 </v-col>
                 <v-col cols="12" md="6">
@@ -111,6 +120,8 @@ export default {
       modal: '',
       modal2: '',
       valid: false,
+      selectedState:'',
+      states:['기초과목','교양과목','경영학과','기계공학과','산업공학과','화학과','수학과','전자공학과','소프트웨어학과','정치외교학과','e-비즈니스학과']
     }
   },
   computed: mapGetters([
@@ -123,7 +134,7 @@ export default {
       console.log('hello');
       console.log(this.$store.getters.getID);
       axios.post('/api/task',
-        { title: this.name, price: this.price, startDate:this.startDate, endDate:this.endDate, description:this.description, image:this.image, memberID: this.$store.getters.getID})
+        { title: this.name, price: this.price, startDate:this.startDate, endDate:this.endDate, description:this.description, image:this.image, memberID: this.$store.getters.getID,selectedState:this.selectedState})
         .then((res) => {
           this.name = ''
           this.price=''
@@ -131,6 +142,7 @@ export default {
           this.endDate=''
           this.description=''
           this.image=''
+          this.selectedState=''
           alert('상품이 게시되었습니다.');
           console.log(res)
         })

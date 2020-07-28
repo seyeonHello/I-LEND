@@ -7,7 +7,9 @@ import store from "./store";
 import 'material-design-icons-iconfont/dist/material-design-icons.css'
 import Vuetify from 'vuetify';
 import 'vuetify/dist/vuetify.min.css';
+import vueMoment from 'vue-moment'
 
+Vue.use(vueMoment);
 Vue.use(Vuetify);
 require('../node_modules/bootstrap/dist/css/bootstrap.css')
 
@@ -17,7 +19,7 @@ Vue.config.productionTip = false
 new Vue({
   el: '#app',
   icons: {
-    iconfont: 'mdiSvg', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
+    iconfont: 'mdi', // 'mdi' || 'mdiSvg' || 'md' || 'fa' || 'fa4' || 'faSvg'
   },
   router,
   store,

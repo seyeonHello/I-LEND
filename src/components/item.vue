@@ -44,15 +44,14 @@
       max-width="400"
     >
     <v-card>
-          <v-card-title>"{{data.memberID}}"님에게 보내는 메시지</v-card-title>
+          <v-card-title>"{{data.memberID}}"님에게 요청해보세요</v-card-title>
           <v-textarea
-            background-color="teal lighten-4"
+            background-color="lime lighten-4"
             color="black"
             v-model="memoDetail"
-            label="추가 메시지를 입력하세요"
             rows="5"
           ></v-textarea>
-          <v-btn color="teal darken-1" text v-on:click="onClickMemoUpdateBtn(data.title)">save</v-btn>
+          <v-btn color="teal darken-1" text v-on:click="onClickMemoUpdateBtn(data.title)">send</v-btn>
     </v-card>
     </v-dialog>
     </v-container>
@@ -76,7 +75,7 @@ export default {
     },
     data () {
     return {
-      memoDetail:'',
+      memoDetail:'책 빌려주세요',
       dialog:false
     }
     },

@@ -48,6 +48,7 @@
               <v-col cols="12" md="3">
               <v-btn
                 color="grey lighten-3"
+                @click="access()"
               >인증
           </v-btn>
           </v-col>
@@ -155,6 +156,9 @@ export default {
     alert("hello");
       window.location.href = '/NewItem';
     }
+    },
+    access(){
+      alert("인증이 완료되었습니다.");
     }
 }
 }

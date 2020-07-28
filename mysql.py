@@ -17,7 +17,13 @@ CORS(app)
 @app.route('/api/tasks', methods=['GET'])
 def get_all_tasks():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM db_tasks.tasks")
+    args = request.args.get('major')
+    strBefore=str(args)
+    strArg="'"+str(args)+"'"
+    if(strBefore=="전체"):
+      cur.execute("SELECT * FROM db_tasks.tasks")
+    else:
+      cur.execute("SELECT * FROM db_tasks.tasks WHERE major="+strArg)
     rv = cur.fetchall()
     #print(rv)
     return jsonify(rv)
@@ -25,7 +31,13 @@ def get_all_tasks():
 @app.route('/api/seeks', methods=['GET'])
 def get_all_seeks():
     cur = mysql.connection.cursor()
-    cur.execute("SELECT * FROM db_tasks.seek")
+    args = request.args.get('major')
+    strBefore = str(args)
+    strArg = "'" + str(args) + "'"
+    if (strBefore == "전체"):
+      cur.execute("SELECT * FROM db_tasks.seek")
+    else:
+      cur.execute("SELECT * FROM db_tasks.seek WHERE major=" + strArg)
     rv = cur.fetchall()
     #print(rv)
     return jsonify(rv)
@@ -38,16 +50,52 @@ def get_all_users():
     #print(rv)
     return jsonify(rv)
 
+@app.route('/api/rent', methods=['GET'])
+def get_all_rent():
+    cur = mysql.connection.cursor()
+    cur.execute("SELECT * FROM db_tasks.rent")
+    rv = cur.fetchall()
+    #print(rv)
+    return jsonify(rv)
+
 @app.route('/api/users', methods=['GET'])
 def get_msg():
     cur = mysql.connection.cursor()
     args = request.args.get('hostName')
-    print('hello')
     print(args)
     hostname=str(args)
     cur.execute("SELECT * FROM db_tasks."+hostname)
     rv = cur.fetchall()
     return jsonify(rv)
+
+@app.route('/api/reviews', methods=['GET'])
+def get_reviews():
+    cur = mysql.connection.cursor()
+    name = request.args.get('ID')
+    print('hello')
+    name=str(name)
+    strName="'"+name+"'"
+    cur.execute("SELECT * FROM db_tasks.reviews WHERE name="+strName)
+    rv = cur.fetchall()
+    return jsonify(rv)
+
+@app.route('/api/rent', methods=['POST'])
+def add_rent():
+    cur = mysql.connection.cursor()
+    lender = request.get_json()['lender']
+    borrower = request.get_json()['borrower']
+    rentTitle = request.get_json()['rentTitle']
+    dueDate = request.get_json()['dueDate']
+    dueTime = request.get_json()['dueTime']
+    meetPlace = request.get_json()['meetPlace']
+    cur.execute(
+      "INSERT INTO db_tasks.rent (lender, borrower, rentTitle, dueDate, dueTime,meetPlace) VALUES('" + str(lender) + "', '" + str(borrower) + "', '" + str(rentTitle) + "', '" + str(dueDate) + "', '" + str(dueTime) + "', '" + str(meetPlace) + "');")
+    data = cur.fetchall()
+    mysql.connection.commit()
+
+    result = {'lender': lender}
+
+    return jsonify({'result': result})
 
 @app.route('/api/task', methods=['POST'])
 def add_task():
@@ -59,8 +107,9 @@ def add_task():
     des = request.get_json()['description']
     image = request.get_json()['image']
     memberID=request.get_json()['memberID']
+    selectedState = request.get_json()['selectedState']
     cur.execute(
-      "INSERT INTO db_tasks.tasks (title, price, startDate, endDate, des,image,memberID) VALUES('" + str(title) + "', '" + str(price) + "', '" + str(startDate) + "', '" + str(endDate) + "', '" + str(des) + "', '" + str(image) + "', '" + str(memberID) + "');")
+      "INSERT INTO db_tasks.tasks (title, price, startDate, endDate, des,image,memberID,major) VALUES('" + str(title) + "', '" + str(price) + "', '" + str(startDate) + "', '" + str(endDate) + "', '" + str(des) + "', '" + str(image) + "', '" + str(memberID) + "', '" + str(selectedState) + "');")
     data = cur.fetchall()
     mysql.connection.commit()
 
@@ -77,9 +126,10 @@ def add_seek():
     seekEndDate = request.get_json()['seekEndDate']
     today=request.get_json()['today']
     memberID=request.get_json()['memberID']
+    selectedState = request.get_json()['selectedState']
     print(seekDes)
     cur.execute(
-      "INSERT INTO db_tasks.seek (seekName, seekDes, seekStartDate, seekEndDate, today, memberID) VALUES('" + str(seekName) + "', '" + str(seekDes) + "', '" + str(seekStartDate) + "', '" + str(seekEndDate) + "', '" + str(today) + "', '" + str(memberID) + "');")
+      "INSERT INTO db_tasks.seek (seekName, seekDes, seekStartDate, seekEndDate, today, memberID,major) VALUES('" + str(seekName) + "', '" + str(seekDes) + "', '" + str(seekStartDate) + "', '" + str(seekEndDate) + "', '" + str(today) + "', '" + str(memberID) + "', '" + str(selectedState) + "');")
     data = cur.fetchall()
     mysql.connection.commit()
 
@@ -120,7 +170,7 @@ def add_users():
     email = request.get_json()['email']
 
     cur.execute(
-      "INSERT INTO db_tasks.users (id, pwd, phoneNum, email) VALUES('" + str(id) + "', '" + str(pwd) + "', '" + str(phoneNum) + "', '" + str(email) + "');")
+      "INSERT INTO db_tasks.users (id, pwd, phoneNum, email, score) VALUES('" + str(id) + "', '" + str(pwd) + "', '" + str(phoneNum) + "', '" + str(email) + "');")
     data = cur.fetchall()
     mysql.connection.commit()
     cur = mysql.connection.cursor()

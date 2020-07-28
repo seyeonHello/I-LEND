@@ -7,6 +7,7 @@ import Login from '@/Views/Login'
 import Seek from '@/Views/Seek'
 import SeekForm from '@/components/SeekForm'
 import MyPage from '@/Views/MyPage'
+import Timer from '@/components/Timer'
 import {mapState, mapActions} from "vuex"
 Vue.use(Router)
 const requireAuth = () => (from, to, next) => {
@@ -44,6 +45,11 @@ export default new Router({
       path:'/MyPage',
       name: 'MyPage',
       component: MyPage
+    },
+    {
+      path:'/Timer',
+      name: 'Timer',
+      component: Timer
     }
   ]
 })
